@@ -1,8 +1,26 @@
 {
+  "name": "@dpirate/mcp-server-wrapper",
+  "exports": {
+    ".": "./src/main.ts"
+  },
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "dpirate",
+  "keywords": ["mcp-server-wrapper", "mcp"],
   "tasks": {
-    "dev": "deno run --watch src/main.ts"
+    "dev": "deno run --watch src/main.ts",
+    "start": "deno run --allow-read --allow-write --allow-run --allow-net src/cli.ts"
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@1"
+    "@std/assert": "jsr:@std/assert@1",
+    "@modelcontextprotocol/sdk": "npm:@modelcontextprotocol/sdk@1.11.1",
+    "@modelcontextprotocol/sdk/client/index.js": "npm:@modelcontextprotocol/sdk@1.11.1/client/index.js",
+    "@modelcontextprotocol/sdk/server/index.js": "npm:@modelcontextprotocol/sdk@1.11.1/server/index.js",
+    "@modelcontextprotocol/sdk/server/stdio.js": "npm:@modelcontextprotocol/sdk@1.11.1/server/stdio.js",
+    "@modelcontextprotocol/sdk/client/stdio.js": "npm:@modelcontextprotocol/sdk@1.11.1/client/stdio.js",
+    "@modelcontextprotocol/sdk/types.js": "npm:@modelcontextprotocol/sdk@1.11.1/types.js"
+  },
+  "compilerOptions": {
+    "noUnusedLocals": true
   }
 }

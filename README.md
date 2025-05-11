@@ -12,41 +12,48 @@ I created this mainly to:
   - stay within limit for number of tools in Cursor
 - segregate tools that read a resource from tools that write to a resource, that way I can better control llm behavior
 
-Right now it only supports stdio and "tools" feature, but I plan to add support for other transports and features in the future.
+Right now it only supports stdio, "tools" feature, deno, jsr and npm packages. I plan to add support for other transports and mcp features in the future.
+
+Does not support passing arguments to the wrapped server. Will be fixed in the future.
 
 Why deno? Just curious.
 
 ## Installation
 
-[Install deno](https://docs.deno.com/runtime/getting_started/installation/) if you don't have it.
+First [Install deno](https://docs.deno.com/runtime/getting_started/installation/) if you don't have it.
 
-### Using dpx
+You need to install this package only if you want to use it programmatically. For CLI usage, you can run it directly from [jsr](https://jsr.io/).
+
+### Install via jsr
 
 ```bash
-# Install dpx if you don't have it
-deno install --allow-run --allow-net -n dpx https://deno.land/x/dpx/cli.ts
-
-# Run directly with dpx
-dpx mcp-server-wrapper YOUR_MCP_SERVER_URL YOUR_TOOL_NAME_1 YOUR_TOOL_NAME_2 ...
+deno install jsr:@dpirate/mcp-server-wrapper
 ```
 
-### Local Installation
+### Install via git (for local development)
 
 ```bash
 # Clone the repository
 git clone https://github.com/your-username/mcp-server-wrapper.git
 cd mcp-server-wrapper
-
-# Run with Deno
-deno run -A src/cli.ts YOUR_MCP_SERVER_URL YOUR_TOOL_NAME_1 YOUR_TOOL_NAME_2 ...
 ```
 
 ## Usage
 
 ### CLI Usage
 
+You can add the command directly to your mcp.json config.
+
+#### From jsr
+
 ```bash
-dpx mcp-server-wrapper YOUR_MCP_SERVER_URL YOUR_TOOL_NAME_1 YOUR_TOOL_NAME_2 ...
+deno run -A jsr:@dpirate/mcp-server-wrapper/cli YOUR_MCP_SERVER_URL YOUR_TOOL_NAME_1 YOUR_TOOL_NAME_2 ...
+```
+
+#### From local installation
+
+```bash
+deno run -A PATH_TO_LOCAL_INSTALLATION/src/cli.ts YOUR_MCP_SERVER_URL YOUR_TOOL_NAME_1 YOUR_TOOL_NAME_2 ...
 ```
 
 Where:
@@ -56,6 +63,8 @@ Where:
   - A JSR package (e.g., `jsr:@username/package-name`)
   - An NPM package (e.g., `npm:package-name`)
 - `YOUR_TOOL_NAME_1`, `YOUR_TOOL_NAME_2`, etc. are the names of the tools you want to expose from the original server
+
+Note: You need to add prefix `jsr:` or `npm:` to the server url.
 
 ### Programmatic Usage
 
@@ -80,14 +89,14 @@ await wrapper.stop();
 
 ```bash
 # Only expose the 'search-repo' and 'list-issues' tools from a GitHub API server
-dpx mcp-server-wrapper ./github-api-server.ts search-repo list-issues
+deno run -A jsr:@dpirate/mcp-server-wrapper/cli ./github-api-server.ts search-repo list-issues
 ```
 
 ### Wrapping Package Servers
 
 ```bash
 # Only expose specific tools from an npm package
-dpx mcp-server-wrapper npm:mcp-wikipedia-server search-wiki get-summary
+deno run -A jsr:@dpirate/mcp-server-wrapper/cli npm:mcp-wikipedia-server search-wiki get-summary
 ```
 
 ## Contributing

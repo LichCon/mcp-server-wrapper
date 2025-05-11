@@ -1,8 +1,3 @@
-/**
- * Contains the class that wrap around a mcp server
- * @module
- */
-
 export {
   MCPServerWrapper,
   type MCPServerWrapperConfig,

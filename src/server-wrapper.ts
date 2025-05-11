@@ -48,9 +48,8 @@ export class MCPServerWrapper {
       // Start our proxy server
       await this.startProxyServer();
     } catch (error) {
-      console.error("Failed to start MCP server wrapper:", error);
       this.cleanup();
-      throw error;
+      throw new Error(`Failed to start MCP server wrapper: ${error}`);
     }
   }
 
@@ -58,26 +57,26 @@ export class MCPServerWrapper {
    * Connect to the original MCP server
    */
   private async connectToServer(): Promise<void> {
-    // Determine if the server is a local file or a package
-    const isLocalFile =
-      this.serverUrl.endsWith(".ts") ||
-      this.serverUrl.endsWith(".js") ||
-      this.serverUrl.startsWith("./") ||
-      this.serverUrl.startsWith("/");
+    try {
+      // Determine the type of server URL
+      const isLocalFile =
+        (this.serverUrl.endsWith(".ts") || this.serverUrl.endsWith(".js")) &&
+        (this.serverUrl.startsWith("./") || this.serverUrl.startsWith("/"));
 
-    if (isLocalFile) {
-      // For local file, spawn a child process
-      const command = this.serverUrl.endsWith(".ts") ? "deno" : "node";
-      const args = this.serverUrl.endsWith(".ts")
-        ? [
-            "run",
-            "--allow-read",
-            "--allow-write",
-            "--allow-run",
-            "--allow-net",
-            this.serverUrl,
-          ]
-        : [this.serverUrl];
+      const isJsrPackage = this.serverUrl.startsWith("jsr:");
+      const isNpmPackage = this.serverUrl.startsWith("npm:");
+
+      // For all server types, we'll spawn a child process
+      let command = "deno";
+      let args: string[];
+
+      if (isLocalFile || isJsrPackage || isNpmPackage) {
+        // For JSR or NPM packages, use deno run -A
+        command = "deno";
+        args = ["run", "-A", this.serverUrl];
+      } else {
+        throw new Error(`Unsupported server URL: ${this.serverUrl}`);
+      }
 
       this.childProcess = new Deno.Command(command, {
         args,
@@ -98,25 +97,10 @@ export class MCPServerWrapper {
       });
 
       await this.client.connect(transport);
-    } else {
-      // For packages, try to dynamically import
-      try {
-        const module = await import(this.serverUrl);
-        if (typeof module.createServer === "function") {
-          // If the module exports a createServer function, use it
-          this.server = await module.createServer();
-        } else {
-          throw new Error(
-            `The module at ${this.serverUrl} does not export a createServer function.`
-          );
-        }
-      } catch (error) {
-        console.error(
-          `Failed to import MCP server from ${this.serverUrl}:`,
-          error
-        );
-        throw error;
-      }
+    } catch (error) {
+      throw new Error(
+        `Failed to connect to server at ${this.serverUrl}: ${error}`
+      );
     }
   }
 
@@ -150,11 +134,17 @@ export class MCPServerWrapper {
    * Set up tool proxy handlers
    */
   private async setupToolHandlers(): Promise<void> {
-    if (!this.client || !this.server) {
+    if (!this.server) {
       return;
     }
 
-    // Get available tools from the wrapped server
+    if (!this.client) {
+      throw new Error(
+        "No client available to communicate with the wrapped server"
+      );
+    }
+
+    // Get available tools from the wrapped server via client
     const toolResponse = await this.client.listTools();
 
     // Filter tools based on the allowed list
@@ -176,8 +166,12 @@ export class MCPServerWrapper {
         throw new Error(`Tool not found: ${toolName}`);
       }
 
-      // Proxy the tool call to the original server
-      return await this.client!.callTool({
+      if (!this.client) {
+        throw new Error("No client available to handle tool call");
+      }
+
+      // Proxy the tool call to the original server via client
+      return await this.client.callTool({
         name: toolName,
         arguments: request.params.arguments || {},
       });

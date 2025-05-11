@@ -2,7 +2,7 @@
 
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { MCPServerWrapper } from "./src/main.ts";
+import { MCPServerWrapper } from "./src/mod.ts";
 
 // Utility function to extract content text from tool response
 function getResponseText(response: unknown): string {

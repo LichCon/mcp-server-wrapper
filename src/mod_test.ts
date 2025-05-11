@@ -1,5 +1,5 @@
 import { assertExists } from "@std/assert";
-import { MCPServerWrapper } from "./main.ts";
+import { MCPServerWrapper } from "./mod.ts";
 
 Deno.test("MCPServerWrapper - Constructor", () => {
   const wrapper = new MCPServerWrapper({

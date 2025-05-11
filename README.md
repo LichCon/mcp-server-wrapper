@@ -1,8 +1,6 @@
 # MCP Server Wrapper
 
-A wrapper around MCP servers to allow filtering which tools to expose to clients.
-
-This package allows you to create a proxy for an existing MCP server while selectively exposing only specific tools.
+A wrapper around a MCP server to select which tools to expose to mcp client.
 
 I created this mainly to:
 

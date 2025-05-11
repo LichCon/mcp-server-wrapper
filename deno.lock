@@ -3,7 +3,8 @@
   "specifiers": {
     "jsr:@std/assert@1": "1.0.13",
     "jsr:@std/internal@^1.0.6": "1.0.6",
-    "npm:@modelcontextprotocol/sdk@1.11.1": "1.11.1_express@5.1.0_zod@3.24.4"
+    "npm:@modelcontextprotocol/sdk@1.11.1": "1.11.1_express@5.1.0_zod@3.24.4",
+    "npm:@modelcontextprotocol/server-memory@*": "2025.4.25"
   },
   "jsr": {
     "@std/assert@1.0.13": {
@@ -17,6 +18,14 @@
     }
   },
   "npm": {
+    "@modelcontextprotocol/sdk@1.0.1": {
+      "integrity": "sha512-slLdFaxQJ9AlRg+hw28iiTtGvShAOgOKXcD0F91nUcRYiOMuS9ZBYjcdNZRXW9G5JQ511GRTdUy1zQVZDpJ+4w==",
+      "dependencies": [
+        "content-type",
+        "raw-body",
+        "zod"
+      ]
+    },
     "@modelcontextprotocol/sdk@1.11.1_express@5.1.0_zod@3.24.4": {
       "integrity": "sha512-9LfmxKTb1v+vUS1/emSk1f5ePmTLkb9Le9AxOB5T0XM59EUumwcS45z05h7aiZx3GI0Bl7mjb3FMEglYj+acuQ==",
       "dependencies": [
@@ -31,6 +40,13 @@
         "zod",
         "zod-to-json-schema"
       ]
+    },
+    "@modelcontextprotocol/server-memory@2025.4.25": {
+      "integrity": "sha512-n6qZVRj3uHpysZVn3Q0IKqIPwQkVZVkcIfE65WRJkiSG4/Xli1xaVh+qOH4duXGC4a9I82391jsl9OdeQFlZuA==",
+      "dependencies": [
+        "@modelcontextprotocol/sdk@1.0.1"
+      ],
+      "bin": true
     },
     "accepts@2.0.0": {
       "integrity": "sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==",

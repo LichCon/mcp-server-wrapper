@@ -1,3 +1,8 @@
+/**
+ * Contains the class that wrap around a mcp server
+ * @module
+ */
+
 export {
   MCPServerWrapper,
   type MCPServerWrapperConfig,
@@ -5,7 +10,7 @@ export {
 
 // Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
 if (import.meta.main) {
-  console.log("MCP Server Wrapper - Use as a CLI or import as a module");
+  console.log("MCP Server Wrapper - Use as a CLI(/cli) or import as a module");
   console.log(
     "CLI Usage: dpx mcp-server-wrapper YOUR_MCP_SERVER_URL YOUR_TOOL_NAME_1 YOUR_TOOL_NAME_2 ..."
   );

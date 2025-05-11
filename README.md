@@ -12,7 +12,7 @@ I created this mainly to:
   - stay within limit for number of tools in Cursor
 - segregate tools that read a resource from tools that write to a resource, that way I can better control llm behavior
 
-Right now it only supports stdio, but I plan to add support for other transports in the future.
+Right now it only supports stdio and "tools" feature, but I plan to add support for other transports and features in the future.
 
 Why deno? Just curious.
 

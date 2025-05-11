@@ -88,7 +88,7 @@ await wrapper.stop();
 ### Filtering GitHub API Tools
 
 ```bash
-# Only expose the 'search-repo' and 'list-issues' tools from a GitHub API server
+# Only expose the 'search-repo' and 'list-issues' tools from a local GitHub API server
 deno run -A jsr:@dpirate/mcp-server-wrapper/cli ./github-api-server.ts search-repo list-issues
 ```
 
@@ -96,7 +96,7 @@ deno run -A jsr:@dpirate/mcp-server-wrapper/cli ./github-api-server.ts search-re
 
 ```bash
 # Only expose specific tools from an npm package
-deno run -A jsr:@dpirate/mcp-server-wrapper/cli npm:mcp-wikipedia-server search-wiki get-summary
+deno run -A jsr:@dpirate/mcp-server-wrapper/cli npm:@modelcontextprotocol/server-memory search_nodes read_graph
 ```
 
 ## Contributing
